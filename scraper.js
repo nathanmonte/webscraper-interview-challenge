@@ -1,21 +1,21 @@
-import { JSDOM } from "jsdom";
-import fetch from "node-fetch";
-import { getImageSources } from "./helpers/images.helper";
 
-
+import { getImageSources } from "./helpers/images.helper.js";
+import { getDescription, getTitle } from "./helpers/textData.helper.js";
+import { getDocumentForUrl } from "./helpers/webAccess.helper.js";
 
 (async () => {
 
     const url = 'https://www.github.com';
     const domain = "github.com";
 
-    const response = await fetch(url);
-    const body = await response.text();
+    const document = await getDocumentForUrl(url);
 
-    const dom = new JSDOM(body);
+    const pageData = {
+        imageSources: getImageSources(document, domain),
+        title: getTitle(document),
+        description: getDescription(document)
+    }
 
-    const imageSources = getImageSources(dom, domain);
-    
-    console.log(imageSources);
+    console.log(pageData)
 })();
     
