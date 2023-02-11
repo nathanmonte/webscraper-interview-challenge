@@ -1,0 +1,16 @@
+{
+  "name": "web-scraper-interview",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "jest": "^29.4.2",
+    "jsdom": "^21.1.0",
+    "node-fetch": "^3.3.0"
+  },
+  "scripts": {
+    "start": "node ./scraper.js",
+    "test": "jest"
+  }
+}
