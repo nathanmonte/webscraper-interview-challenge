@@ -1,3 +1,5 @@
+import { checkAssetIsFromDomain } from "./assets.helper.js";
+
 /**
  * Method for getting the title from the document.
  * 
@@ -38,19 +40,23 @@ export const getDescription = (document, url) => {
  * @returns {string[]} Array of links which are on the domain.
  */
 export const getLinks = (document, domain, url) => {
-    const links = Array.prototype.slice.call(document.querySelectorAll("a")).map(image => image.href);
+    const links = Array.prototype.slice.call(document.querySelectorAll("a")).map(link => link.href);
     const linksWithoutEmpties = links.filter(link => link.length > 0);
     const linksModified = linksWithoutEmpties.map(link => {
         // Add the domain if missing
         if (link[0] === "/") link = `${domain}${link}`;
         // TODO: Review if I want this link type.
         if (link.includes("?")) link = link.split("?")[0];
+       
         return link;
-    })
+    }).filter(link => (link.includes("http://") || link.includes("https://")));
+    
+    const linksWithoutNonDomainValues = linksModified.filter(link => checkAssetIsFromDomain(link, domain));
 
-    const linksWithoutNonDomainValues = linksModified.filter(link => link.includes("http://" + domain) || link.includes("https://" + domain));
-
+    console.log(linksWithoutNonDomainValues);
+    
     const uniqueLinks = Array.from(new Set(linksWithoutNonDomainValues)).sort();
+    console.log(uniqueLinks);
 
     console.log(`Found ${uniqueLinks.length} links for domain ${domain} on URL ${url}`);
 

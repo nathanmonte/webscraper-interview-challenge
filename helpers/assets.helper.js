@@ -5,9 +5,10 @@
  * @param {string} domain The domain portion of the URL.
  * @returns {boolean} Returns a boolean value for whether the asset is from the domain.
  */
-const checkAssetIsFromDomain = (assetSrc, domain) => {
-    const regexForMatchingDomain = new RegExp("http[s]?:.*\.?" + domain);
-    return assetSrc.length > 0 && assetSrc.match(regexForMatchingDomain);
+export const checkAssetIsFromDomain = (assetSrc, domain) => {
+    // TODO: Review this as not particularly safe as we're  care where in the 
+    // const regexForMatchingDomain = new RegExp("http[s]?:.*\.?" + domain);
+    return assetSrc.length > 0 && assetSrc.includes(domain);
 }
 
 /**
@@ -28,12 +29,20 @@ export const getSourcesForAssetTypeFromPage = (document, domain, url, assetType)
     let assets = document.querySelectorAll(assetType);
 
     // Filter out any assets with missing valueAttribute and map the valueAttribute to an array.
-    const assetSources = Array.prototype.slice.call(assets).filter(asset => asset[valueAttribute]).map(asset => asset[valueAttribute]);
+    const assetSources = Array.prototype.slice.call(assets).filter(asset => asset[valueAttribute]).map(assetSrc => {
+        let returnString;
+        let value = assetSrc[valueAttribute];
+        if (value[0] === "/") returnString = `${domain}${value}`;
+        else returnString = value;
+        return returnString;
+    });
+
+    if (assetType.includes("link")) console.log(assetSources);
 
     // Check if the asset is from the domain.
     const onlyAssetsFromDomain = assetSources.filter(assetSrc => checkAssetIsFromDomain(assetSrc, domain));
 
-    console.log(`Found ${onlyAssetsFromDomain.length} ${assetType} on page which are located on the ${domain} domain for URL ${url}.`);
+    // console.log(`Found ${onlyAssetsFromDomain.length} ${assetType} on page which are located on the ${domain} domain for URL ${url}.`);
 
     return onlyAssetsFromDomain
 }

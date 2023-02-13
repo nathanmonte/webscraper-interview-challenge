@@ -1,4 +1,5 @@
 
+import { writeFile } from "fs/promises";
 import { getPageData } from "./helpers/pageData.helper.js";
 
 const url = process.argv[2];
@@ -13,11 +14,14 @@ const url = process.argv[2];
 
 const pageData = await getPageData(url);
 let {links} = pageData;
-const promiseArray = links.map((link) => getPageData(link));
+console.log(pageData);
+const promiseArray = links.map(async (link) => await getPageData(link));
 const pageDataArray = await Promise.all(promiseArray);
 
-console.log(pageDataArray);
+// console.log(pageDataArray);
 
+
+await writeFile("./arrayData.json", JSON.stringify(pageDataArray), "utf8");
 /**
  * Request => list of links
  * Use a recursive function.

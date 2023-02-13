@@ -4,6 +4,7 @@ This project contains a simple web scraper capable of taking a URL and exploring
 
 ## How to run
 
+- Project requires a minimum node version of 14 to run.
 - You will need to install dependencies using yarn by running `yarn`
 - You can run the web scraper by calling `yarn start URL` where URL is a web page which you want to scrape.
 

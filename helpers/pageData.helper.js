@@ -9,8 +9,8 @@ import { getDocumentForUrl } from "./webAccess.helper.js";
  * @returns {Object} Returns an object with the data we've secured from the page.
  */
 export const getPageData = async (url) => {
-    const domain = "https://carthrottle.com";
-    const domainLocation = "carthrottle.com";
+    const domain = "https://daringfireball.net";
+    const domainLocation = "daringfireball.net";
 
     const document = await getDocumentForUrl(url);
 
