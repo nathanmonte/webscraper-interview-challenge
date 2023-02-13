@@ -8,9 +8,8 @@ import { getDocumentForUrl } from "./webAccess.helper.js";
  * @param {string} url The URL we're collecting the assets for.
  * @returns {Object} Returns an object with the data we've secured from the page.
  */
-export const getPageData = async (url) => {
-    const domain = "https://daringfireball.net";
-    const domainLocation = "daringfireball.net";
+export const getPageData = async (url, domainLocation, domain) => {
+    console.log(`Getting page data for ${url}`);
 
     const document = await getDocumentForUrl(url);
 

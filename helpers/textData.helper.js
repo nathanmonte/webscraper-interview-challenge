@@ -52,11 +52,7 @@ export const getLinks = (document, domain, url) => {
     }).filter(link => (link.includes("http://") || link.includes("https://")));
     
     const linksWithoutNonDomainValues = linksModified.filter(link => checkAssetIsFromDomain(link, domain));
-
-    console.log(linksWithoutNonDomainValues);
-    
     const uniqueLinks = Array.from(new Set(linksWithoutNonDomainValues)).sort();
-    console.log(uniqueLinks);
 
     console.log(`Found ${uniqueLinks.length} links for domain ${domain} on URL ${url}`);
 

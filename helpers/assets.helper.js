@@ -37,8 +37,6 @@ export const getSourcesForAssetTypeFromPage = (document, domain, url, assetType)
         return returnString;
     });
 
-    if (assetType.includes("link")) console.log(assetSources);
-
     // Check if the asset is from the domain.
     const onlyAssetsFromDomain = assetSources.filter(assetSrc => checkAssetIsFromDomain(assetSrc, domain));
 
