@@ -26,7 +26,7 @@ export const getLinks = (document, domain, url) => {
         return link;
     })
 
-    const linksWithoutNonDomainValues = linksModified.filter(link => link.includes("http://") || link.includes("https://"));
+    const linksWithoutNonDomainValues = linksModified.filter(link => link.includes("http://" + domain) || link.includes("https://" + domain));
 
     const uniqueLinks = Array.from(new Set(linksWithoutNonDomainValues)).sort();
 

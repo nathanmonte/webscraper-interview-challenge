@@ -1,7 +1,7 @@
 import fs from 'fs';
 import { JSDOM } from "jsdom";
 import path from 'path';
-import { getImageSources } from '../helpers/images.helper.js';
+import { getSourcesForAssetTypeFromPage } from '../helpers/assets.helper.js';
 import { getDescription, getLinks, getTitle } from '../helpers/textData.helper.js';
 
 
@@ -36,7 +36,7 @@ test("Retrieves list of links from the page", () => {
 });
 
 test("Retrieves list of image src properties from the page", () => {
-    const images = getImageSources(document, domain, url);
+    const images = getSourcesForAssetTypeFromPage(document, domain, url, "img");
     expect(images).toMatchInlineSnapshot(`
 [
   "https://images.cdn.google.com/image/2/100/100/5/assets/img/user.jpg",
@@ -44,3 +44,31 @@ test("Retrieves list of image src properties from the page", () => {
 ]
 `);
 });
+
+test("Retrieves list of script files from the page", () => {
+  const scriptFiles = getSourcesForAssetTypeFromPage(document, domain, url, "script");
+  expect(scriptFiles).toMatchInlineSnapshot(`
+[
+  "https://google.com/assets/scriptFile.js",
+  "https://google.com/assets/script2.js",
+]
+`);
+});
+
+test("Retrieves list of stylesheets from the page", () => {
+  const stylesheets = getSourcesForAssetTypeFromPage(document, domain, url, "link[rel='stylesheet']");
+  expect(stylesheets).toMatchInlineSnapshot(`
+[
+  "https://www.google.com/wp/wp-includes/css/dashicons.min.css?ver=6.0.3",
+  "https://www.google.com/wp-content/themes/bp-hope/dist/main.css?ver=1.0",
+]
+`);
+})
+test("Retrieves list of iframes from the page", () => {
+  const iframes = getSourcesForAssetTypeFromPage(document, domain, url, "iframe");
+  expect(iframes).toMatchInlineSnapshot(`
+[
+  "https://videos.google.com/video1",
+]
+`);
+})
