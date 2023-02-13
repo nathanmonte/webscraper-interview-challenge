@@ -6,7 +6,7 @@ import { getDescription, getLinks, getTitle } from '../helpers/textData.helper.j
 
 
 /** Get a string with a HTML page contained it so we can test our selector methods. */
-let htmlTextData = fs.readFileSync(path.resolve(__dirname, 'examplePage.txt'), 'utf8');
+let htmlTextData = fs.readFileSync(path.resolve(__dirname, './assets/examplePage.txt'), 'utf8');
 
 /** Create a virtual DOM and access the document so we can run out selector methods. */
 const dom = new JSDOM(htmlTextData);
