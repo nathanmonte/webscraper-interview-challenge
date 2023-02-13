@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document For Testing</title>
+    <meta name="description" content="This is the description for the page.">
+</head>
+
+<body>
+    <a href="https://google.com/about">
+        <img src="https://images.cdn.circlesix.co/image/3/350/120/5/assets/img/carthrottle/profile-cover.jpg" />
+    </a>
+
+    <a href="https://google.com/offers">
+        <h2>Look at this offer</h2>
+    </a>
+    <img src="https://images.cdn.google.com/image/2/100/100/5/assets/img/user.jpg" />
+    <img src="https://images.cdn.google.com/image/2/100/100/5/uploads/profile/1dfbe0ab0a30d2e58a070854169ecbb1.jpg" />
+
+</body>
+
+</html>

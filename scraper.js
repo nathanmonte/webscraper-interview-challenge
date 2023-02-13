@@ -1,26 +1,24 @@
 
-import { getImageSources } from "./helpers/images.helper.js";
-import { getDescription, getLinks, getTitle } from "./helpers/textData.helper.js";
-import { getDocumentForUrl } from "./helpers/webAccess.helper.js";
+import { getPageData } from "./helpers/pageData.helper.js";
 
-(async () => {
+const url = process.argv[2];
 
-    const url = 'https://www.github.com';
-    const domain = "https://github.com";
-    const domainLocation = "github.com"
+/**
+ * Initially return a single page data object.
+ * When this returns it will come with a list of urls.
+ * We want to take these urls and add them to an array.
+ * We will then cycle through the array one by one and create page objects.
+ */
 
-    const document = await getDocumentForUrl(url);
 
-    const description = getDescription(document);
+const pageData = await getPageData(url);
+let {links} = pageData;
+const promiseArray = links.map((link) => getPageData(link));
+const pageDataArray = await Promise.all(promiseArray);
 
-    const pageData = {
-        imageSources: getImageSources(document, domainLocation),
-        title: getTitle(document),
-        description: description ? description : "🚨 Description not available for page.",
-        links: getLinks(document, domain)
-    }
+console.log(pageDataArray);
 
-    
-    console.log(pageData);
-})();
-    
+/**
+ * Request => list of links
+ * Use a recursive function.
+ */

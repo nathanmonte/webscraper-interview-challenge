@@ -1,8 +1,21 @@
-export const getTitle = (document) => document.querySelector("title").text;
+export const getTitle = (document, url) => {
+    const titleTag = document.querySelector("title");
+    const titleValue = titleTag ?  titleTag.text : "🚨 Title not available for page.";
 
-export const getDescription = (document) => document.querySelector("meta[name='description']").content;
+    console.log(`Title ${titleValue ? "found" : "not found" } for URL ${url}`);
+    
+    return titleValue;
+};
 
-export const getLinks = (document, domain) => {
+export const getDescription = (document, url) => {
+    const descriptionTag = document.querySelector("meta[name='description']");
+    const descriptionValue = descriptionTag ? descriptionTag.content : "🚨 Description not available for page.";
+    console.log(`Description ${descriptionValue ? "found" : "not found" } for URL ${url}`);
+
+    return descriptionValue;
+}
+
+export const getLinks = (document, domain, url) => {
     const links = Array.prototype.slice.call(document.querySelectorAll("a")).map(image => image.href);
     const linksWithoutEmpties = links.filter(link => link.length > 0);
     const linksModified = linksWithoutEmpties.map(link => {
@@ -12,10 +25,12 @@ export const getLinks = (document, domain) => {
         if (link.includes("?")) link = link.split("?")[0];
         return link;
     })
-    
+
     const linksWithoutNonDomainValues = linksModified.filter(link => link.includes("http://") || link.includes("https://"));
 
-    const uniqueDomains = Array.from(new Set(linksWithoutNonDomainValues)).sort();
+    const uniqueLinks = Array.from(new Set(linksWithoutNonDomainValues)).sort();
 
-    return uniqueDomains;
+    console.log(`Found ${uniqueLinks.length} links for domain ${domain} on URL ${url}`);
+
+    return uniqueLinks;
 }
