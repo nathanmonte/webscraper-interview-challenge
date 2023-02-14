@@ -20,6 +20,7 @@ let fileLocation = `./json-results/${urlHost}-results.json`;
 // Create arrays to handle ach part of the URL processing.
 let processedUrls = [], urlQueue = [url];
 
+// Start file with an opening "["
 await writeFile(fileLocation, "[", "utf8");
 
 // While the url queue contains links to pages to process we should run this loop.
@@ -49,4 +50,5 @@ while (urlQueue.length > 0) {
     await appendFile(fileLocation, jsonString, "utf8");
 }
 
+// End file with an opening "]"
 await appendFile(fileLocation, "]", "utf8");
