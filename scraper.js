@@ -1,35 +1,52 @@
 
-import { writeFile } from "fs/promises";
+import { appendFile, writeFile } from "fs/promises";
 import { getPageData } from "./helpers/pageData.helper.js";
+import { removeAlreadyProcessedUrls } from "./helpers/urlProcessing.helper.js";
 
 const url = process.argv[2];
 
+if (!url) {
+    console.error("You must provide a URL to the program as the third parameter.");
+    process.exit();
+}
+
+// We want to capture the domain and the urlHost
 const urlEntity = new URL(url);
 const domain = urlEntity.origin;
-const domainLocation = urlEntity.host;
+const urlHost = urlEntity.host;
 
+let fileLocation = `./json-results/${urlHost}-results.json`; 
 
+// Create arrays to handle ach part of the URL processing.
+let processedUrls = [], urlQueue = [url];
 
-/**
- * Initially return a single page data object.
- * When this returns it will come with a list of urls.
- * We want to take these urls and add them to an array.
- * We will then cycle through the array one by one and create page objects.
- */
+await writeFile(fileLocation, "[", "utf8");
 
+// While the url queue contains links to pages to process we should run this loop.
+while (urlQueue.length > 0) {
+    // We should take the first item from queue.
+    let processingUrl = urlQueue.splice(0,1)[0];
+    console.log(`Processing url: ${processingUrl}`);
 
-const pageData = await getPageData(url, domainLocation, domain);
+    // Collect the page data for the URL we're currently processing.
+    let pageData = await getPageData(processingUrl, urlHost, domain);
+    console.log(`Collected page data for url: ${processingUrl}`);
 
-let {links} = pageData;
-console.log(pageData);
-const promiseArray = links.map(async (link) => await getPageData(link, domainLocation, domain));
-const pageDataArray = await Promise.all(promiseArray);
+    // Add the new links we've found removing any in the processed list or the queue.
+    let newUrlsForProcessing = removeAlreadyProcessedUrls(pageData.links, [...processedUrls, ...urlQueue]);
+    // Reconstruct the URL queue to have the new URLs included.
+    urlQueue = [...urlQueue, ...newUrlsForProcessing];
 
-// console.log(pageDataArray);
+    console.log(`URL Queue now length of ${urlQueue.length}\n\n`);
+    
+    // Push the URL to the processed list so we don't process it again.
+    processedUrls.push(processingUrl);
 
+    // Convert the page data into JSON and append a comma to it so we can immediately save the result to the file.
+    let jsonString = `${JSON.stringify(pageData)}${urlQueue.length > 0 ? "," : ""}`;
 
-await writeFile(`./${domainLocation}-results.json`, JSON.stringify(pageDataArray), "utf8");
-/**
- * Request => list of links
- * Use a recursive function.
- */
+    // Immediately save the page data to the json result file.
+    await appendFile(fileLocation, jsonString, "utf8");
+}
+
+await appendFile(fileLocation, "]", "utf8");

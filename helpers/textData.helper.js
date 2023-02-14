@@ -11,8 +11,6 @@ export const getTitle = (document, url) => {
     const titleTag = document.querySelector("title");
     const titleValue = titleTag ? titleTag.text : "🚨 Title not available for page.";
 
-    console.log(`Title ${titleValue ? "found" : "not found"} for URL ${url}`);
-
     return titleValue;
 };
 
@@ -26,7 +24,6 @@ export const getTitle = (document, url) => {
 export const getDescription = (document, url) => {
     const descriptionTag = document.querySelector("meta[name='description']");
     const descriptionValue = descriptionTag ? descriptionTag.content : "🚨 Description not available for page.";
-    console.log(`Description ${descriptionValue ? "found" : "not found"} for URL ${url}`);
 
     return descriptionValue;
 }
@@ -53,8 +50,6 @@ export const getLinks = (document, domain, url) => {
     
     const linksWithoutNonDomainValues = linksModified.filter(link => checkAssetIsFromDomain(link, domain));
     const uniqueLinks = Array.from(new Set(linksWithoutNonDomainValues)).sort();
-
-    console.log(`Found ${uniqueLinks.length} links for domain ${domain} on URL ${url}`);
 
     return uniqueLinks;
 }
